@@ -1,0 +1,43 @@
+{
+  "name": "seeding-system-extension",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "build:dev": "NODE_ENV=development npx webpack --watch",
+    "start": "NODE_ENV=development LOCAL_DEV=1 webpack serve",
+    "lint": "eslint src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dinhhung2910/seeding-system-extension.git"
+  },
+  "author": "Hung Dinh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dinhhung2910/seeding-system-extension/issues"
+  },
+  "homepage": "https://github.com/dinhhung2910/seeding-system-extension#readme",
+  "devDependencies": {
+    "eslint": "^8.29.0",
+    "eslint-config-google": "^0.14.0",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.11.1",
+    "webpack-userscript": "^2.5.8"
+  },
+  "dependencies": {
+    "@babel/core": "^7.21.3",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-react": "^7.18.6",
+    "babel": "^6.23.0",
+    "babel-loader": "^9.1.0",
+    "cash-dom": "^8.1.2",
+    "css-loader": "^6.7.1",
+    "less": "^4.1.3",
+    "less-loader": "^11.1.0",
+    "preact": "^10.7.1",
+    "style-loader": "^3.3.1"
+  }
+}
