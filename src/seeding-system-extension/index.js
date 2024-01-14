@@ -1,0 +1,15 @@
+// import store from '../common/store';
+
+import {randomInt} from '../common/util';
+import checkAction from './checkAction';
+
+(() => {
+  const main = () => {
+    setTimeout(() => {
+      checkAction();
+      main();
+    }, randomInt(1000, 2000));
+  };
+
+  main();
+})();
