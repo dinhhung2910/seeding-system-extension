@@ -6,15 +6,9 @@
 // @homepage https://github.com/dinhhung2910/seeding-system-extension#readme
 // @supportURL https://github.com/dinhhung2910/seeding-system-extension/pulls
 // @match https://tiktok.com/**
-// @grant GM_getValue
-// @grant GM_setValue
-// @grant GM_deleteValue
-// @grant GM_listValues
-// @grant GM_notification
+// @match https://www.tiktok.com/**
+// @grant GM_fetch
 // @grant GM_xmlhttpRequest
-// @grant GM_addValueChangeListener
-// @grant GM_removeValueChangeListener
-// @grant GM_log
 // @namespace Script
 // @require http://localhost:8080/seeding-system-extension.user.js
 // ==/UserScript==

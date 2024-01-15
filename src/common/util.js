@@ -126,3 +126,11 @@ export const randomInt = (min, max) => {
   const range = max - min;
   return Math.trunc(Math.random() * range) + min;
 };
+
+export const sleep = (t) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, t);
+  });
+};
