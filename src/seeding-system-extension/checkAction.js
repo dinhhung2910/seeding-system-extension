@@ -79,7 +79,8 @@ const setupSessionStore = async (sessionStore, user) => {
     });
 
     const body = await res.response;
-    sessionStore.token = JSON.parse(body).jsonData.token;
+    console.log(body);
+    sessionStore.token = (JSON.parse(body)).jsonData.token;
   } catch (e) {
     console.error('Can\'t get device token');
     console.error(e);
@@ -170,6 +171,7 @@ function _checkAction() {
 
       // request token if it is not existed
       if (!sessionStore.token) {
+        console.log(sessionStore);
         console.log('Setting session token...');
         await setupSessionStore(sessionStore, user);
       }
