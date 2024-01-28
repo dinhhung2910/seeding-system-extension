@@ -8,5 +8,5 @@
   "match": [ "https://tiktok.com/**", "https://www.tiktok.com/**" ],
   "supportURL": "https://github.com/dinhhung2910/seeding-system-extension/pulls",
   "grant": ["GM_fetch", "GM_xmlhttpRequest"],
-  "connect": ["localhost"]
+  "connect": ["localhost", "127.0.0.1:6000"]
 }
