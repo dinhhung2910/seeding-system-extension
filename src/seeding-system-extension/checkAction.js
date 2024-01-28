@@ -1,5 +1,8 @@
 // import {sleep} from '../common/util';
+import {sleep} from '../common/util';
 import {
+  ArticleEventResultCode,
+  MAX_TRIALS,
   SERVER_ENDPOINT,
   SITE_CONFIG_ELM_ID,
   SITE_STATE_ELM_ID,
@@ -57,60 +60,25 @@ const parseUserInfoFromState = () => {
 };
 
 /**
- * Fill in information for sessionStore
- * @param {object} sessionStore
- * @param {object} user
-*/
-const setupSessionStore = async (sessionStore, user) => {
-  sessionStore.userId = user.userId;
-  sessionStore.userName = user.userName;
-
-  try {
-    const res = await sendRequest({
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      data: JSON.stringify({
-        userId: sessionStore.userId,
-        userName: sessionStore.userName,
-      }),
-      url: `${SERVER_ENDPOINT}/api/auth/device`,
-    });
-
-    const body = await res.response;
-    console.log(body);
-    sessionStore.token = (JSON.parse(body)).jsonData.token;
-  } catch (e) {
-    console.error('Can\'t get device token');
-    console.error(e);
-  }
-};
-
-/**
  * Ask server what to do now
- * @param {*} sessionStore
  */
-const getCommand = async (sessionStore) => {
+const getCommand = async () => {
   const url = window.location.href;
 
   try {
     const r = await sendRequest({
-      method: 'PUT',
+      method: 'GET',
       headers: {
         'Content-type': 'application/json',
-        'x-auth-token': sessionStore.token,
-        'x-auth-userid': sessionStore.userId,
       },
-      data: JSON.stringify({
-        url,
-      }),
-      url: `${SERVER_ENDPOINT}/api/device/checkin`,
+      url: `${SERVER_ENDPOINT}/api/event`,
+      data: '{}',
     });
 
     const response = await r.response;
     const body = JSON.parse(response);
-    if (body.isValid && body.jsonData) {
+    if (body.isValid && body.jsonData &&
+      body.jsonData.event && body.jsonData.event.url == url) {
       return body.jsonData;
     } else {
       return {action: false};
@@ -127,16 +95,18 @@ const getCommand = async (sessionStore) => {
  * @param {object} command
  */
 const executeCommand = async (command) => {
-  if (!command.action) {
+  console.log(command);
+  if (!command.action || !command.event) {
     console.log('No action...');
     return;
   }
 
-  if (command.type == 'comment') {
-    console.log(command);
+  const event = command.event;
+  if (event.comment) {
+    console.log(event.comment);
     try {
       const input = document.querySelector(TIKTOK_COMMENT_BOX_SELECTOR);
-      input.innerText = command.content;
+      input.innerText = event.comment;
       // await sleep(500);
       const button = document.querySelector(TIKTOK_COMMENT_SUBMIT_SELECTOR);
       button.click();
@@ -147,11 +117,40 @@ const executeCommand = async (command) => {
 };
 
 /**
+ * Report result back to server
+ * @param {*} resultCode
+ */
+const sendResult = async (resultCode) => {
+  try {
+    const r = await sendRequest({
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      url: `${SERVER_ENDPOINT}/api/event/`,
+      data: JSON.stringify({resultCode}),
+    });
+
+    const response = await r.response;
+    const body = JSON.parse(response);
+    if (body.isValid) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (e) {
+    console.error('Can\'t update status');
+    console.error(e);
+    return true;
+  }
+};
+
+/**
  * Check action
  * @return {function}
  */
 function _checkAction() {
-  const sessionStore = {};
+  let trial = 0;
 
   return async () => {
     try {
@@ -163,29 +162,31 @@ function _checkAction() {
       }
 
       if (!user) {
-        delete sessionStore.token;
-        delete sessionStore.userId;
-        delete sessionStore.userName;
-        return;
+        throw new Error('Unauthenticated user.');
       }
 
-      // request token if it is not existed
-      if (!sessionStore.token) {
-        console.log(sessionStore);
-        console.log('Setting session token...');
-        await setupSessionStore(sessionStore, user);
-      }
+      console.log('User infor:', user);
 
       // try get action
-      const command = await getCommand(sessionStore);
-      if (command.error) {
-        await setupSessionStore(sessionStore, user);
-        return;
+      const command = await getCommand();
+      if (!command.action) {
+        console.log(command);
+        throw new Error('No action.');
       } else {
+        await sleep(2000);
         await executeCommand(command);
+        await sendResult(ArticleEventResultCode.SUCCESS);
+        await sleep(2000);
+        window.close();
       }
     } catch (e) {
       console.error(e);
+      trial++;
+
+      if (trial >= MAX_TRIALS) {
+        await sendResult(ArticleEventResultCode.UNAUTHENTICATED);
+        window.close();
+      }
     }
   };
 }
