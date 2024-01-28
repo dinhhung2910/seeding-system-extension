@@ -1,11 +1,12 @@
 {
   "name": "Seeding system extension",
   "namespace": "Script",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "updateURL": "https://github.com/dinhhung2910/seeding-system-extension/raw/master/dist/seeding-system-extension.user.js",
   "description": "Seeding system extension",
   "author": "Hung Dinh",
   "match": [ "https://tiktok.com/**", "https://www.tiktok.com/**" ],
   "supportURL": "https://github.com/dinhhung2910/seeding-system-extension/pulls",
-  "grant": ["GM_fetch", "GM_xmlhttpRequest"]
+  "grant": ["GM_fetch", "GM_xmlhttpRequest"],
+  "connect": ["localhost"]
 }
