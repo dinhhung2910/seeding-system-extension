@@ -8,7 +8,7 @@
 // @match https://tiktok.com/**
 // @match https://www.tiktok.com/**
 // @connect localhost
-// @connect 127.0.0.1:6000
+// @connect http://127.0.0.1:6000
 // @grant GM_fetch
 // @grant GM_xmlhttpRequest
 // @namespace Script
