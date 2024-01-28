@@ -6,6 +6,7 @@ import {
   SERVER_ENDPOINT,
   SITE_CONFIG_ELM_ID,
   SITE_STATE_ELM_ID,
+  TIKTOK_CHAT_BOX_SELECTOR,
   TIKTOK_COMMENT_BOX_SELECTOR,
   TIKTOK_COMMENT_SUBMIT_SELECTOR,
 } from './constants';
@@ -105,7 +106,11 @@ const executeCommand = async (command) => {
   if (event.comment) {
     console.log(event.comment);
     try {
-      const input = document.querySelector(TIKTOK_COMMENT_BOX_SELECTOR);
+      let input = document.querySelector(TIKTOK_COMMENT_BOX_SELECTOR);
+      if (!input) {
+        input = document.querySelector(TIKTOK_CHAT_BOX_SELECTOR);
+      }
+
       input.innerText = event.comment;
       // await sleep(500);
       const button = document.querySelector(TIKTOK_COMMENT_SUBMIT_SELECTOR);
@@ -176,7 +181,7 @@ function _checkAction() {
         await sleep(2000);
         await executeCommand(command);
         await sendResult(ArticleEventResultCode.SUCCESS);
-        await sleep(2000);
+        await sleep(5000);
         window.close();
       }
     } catch (e) {
