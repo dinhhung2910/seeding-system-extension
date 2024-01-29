@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name Seeding system extension
 // @description Seeding system extension
-// @version 1.0.7
+// @version 1.0.8
 // @author Hung Dinh
 // @homepage https://github.com/dinhhung2910/seeding-system-extension#readme
 // @supportURL https://github.com/dinhhung2910/seeding-system-extension/pulls

@@ -127,10 +127,13 @@ export const randomInt = (min, max) => {
   return Math.trunc(Math.random() * range) + min;
 };
 
-export const sleep = (t) => {
+/**
+ *
+ * @param {*} t time to sleep
+ * @return {Promise}
+ */
+export function sleep(t) {
   return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, t);
+    setTimeout(resolve, t);
   });
 };

@@ -111,8 +111,25 @@ const executeCommand = async (command) => {
         input = document.querySelector(TIKTOK_CHAT_BOX_SELECTOR);
       }
 
-      input.innerText = event.comment;
-      // await sleep(500);
+      await sleep(500);
+      input.focus();
+      await sleep(500);
+
+      // tell agent to type comment
+      console.log('Tell agent to comment');
+      const r = await sendRequest({
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        url: `${SERVER_ENDPOINT}/api/event/comment`,
+        data: JSON.stringify({
+          comment: event.comment,
+        }),
+      });
+      await r.response;
+
+      await sleep(1000);
       const button = document.querySelector(TIKTOK_COMMENT_SUBMIT_SELECTOR);
       button.click();
     } catch (e) {
@@ -181,7 +198,7 @@ function _checkAction() {
         await sleep(2000);
         await executeCommand(command);
         await sendResult(ArticleEventResultCode.SUCCESS);
-        await sleep(5000);
+        await sleep(1000);
         window.close();
       }
     } catch (e) {
