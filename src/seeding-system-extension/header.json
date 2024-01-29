@@ -1,7 +1,7 @@
 {
   "name": "Seeding system extension",
   "namespace": "Script",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "updateURL": "https://github.com/dinhhung2910/seeding-system-extension/raw/master/dist/seeding-system-extension.user.js",
   "description": "Seeding system extension",
   "author": "Hung Dinh",
