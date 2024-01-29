@@ -198,7 +198,7 @@ function _checkAction() {
         await sleep(2000);
         await executeCommand(command);
         await sendResult(ArticleEventResultCode.SUCCESS);
-        await sleep(1000);
+        await sleep(10000);
         window.close();
       }
     } catch (e) {
